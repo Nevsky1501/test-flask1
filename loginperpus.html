@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistem Informasi Perpustakaan</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Times', sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background-image: url(images/peakpx.jpg)
+        }
+
+        /* Dekorasi Lingkaran */
+        .circle{
+            position:absolute;
+            border-radius:50%;
+            background:rgba(255,255,255,0.25);
+            backdrop-filter: blur(5px);
+        }
+
+        .circle1{
+            width:250px;
+            height:250px;
+            top:-80px;
+            left:-80px;
+        }
+
+        .circle2{
+            width:180px;
+            height:180px;
+            bottom:-50px;
+            right:-50px;
+        }
+
+        .circle3{
+            width:120px;
+            height:120px;
+            top:15%;
+            right:10%;
+        }
+
+        .container{
+            width:900px;
+            max-width:95%;
+            display:flex;
+            background:white;
+            border-radius:25px;
+            overflow:hidden;
+            box-shadow:0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .left{
+            flex:1;
+            background:linear-gradient(135deg,#fff0e9,#b97a36);
+            color:white;
+            padding:50px;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+        }
+
+        .left h1{
+            font-size:52px;
+            margin-bottom:15px;
+            color: #f2ead1;
+        }
+
+        .left p{
+            font-size:13px;
+            line-height:1.8;
+            opacity:0.95;
+            font-style: italic;
+        }
+
+        .left .icon{
+            font-size:90px;
+            margin-bottom:20px;
+        }
+
+        .right{
+            flex:1;
+            padding:50px;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+        }
+
+        .right h2{
+            color:#81491f;
+            margin-bottom:8px;
+        }
+
+        .subtitle{
+            color:#bba887;
+            margin-bottom:30px;
+            font-size:14px;
+        }
+
+        .input-group{
+            margin-bottom:18px;
+        }
+
+        .input-group label{
+            display:block;
+            margin-bottom:8px;
+            color:#74432a;
+            font-size:15px;
+        }
+
+        .input-group input{
+            width:100%;
+            padding:14px;
+            border:2px solid #d8ecff;
+            border-radius:12px;
+            outline:none;
+            transition:0.3s;
+        }
+
+        .input-group input:focus{
+            border-color:#734a1b;
+            box-shadow:0 0 10px rgba(66,185,255,0.25);
+        }
+
+        .remember{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:20px;
+            font-size:13px;
+        }
+
+        .remember a{
+            color:#694420;
+            text-decoration:none;
+        }
+
+        .btn-login{
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:12px;
+            background:linear-gradient(135deg,#896945,#e4d2be);
+            color:white;
+            font-size:16px;
+            font-weight:600;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .btn-login:hover{
+            transform:translateY(-2px);
+            box-shadow:0 10px 20px rgba(33,150,243,0.3);
+        }
+
+        .footer{
+            text-align:center;
+            margin-top:25px;
+            color:#888;
+            font-size:13px;
+        }
+
+        @media(max-width:768px){
+            .container{
+                flex-direction:column;
+            }
+
+            .left{
+                padding:30px;
+            }
+
+            .right{
+                padding:35px;
+            }
+        }
+
+    .flash-success {
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    background: #d1fae5;
+    color: #065f46;
+    }
+
+    .flash-error {
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    background: #fee2e2;
+    color: #991b1b;
+    }
+    </style>
+</head>
+<body>
+
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
+
+    <div class="container">
+
+        <div class="left">
+            <h1>LIBRARY ADMIN</h1>
+            <p>
+                Selamat datang di Sistem Informasi Perpustakaan.
+                Kelola data buku, anggota, peminjaman, dan pengembalian
+                dengan lebih mudah dan cepat.
+            </p>
+        </div>
+
+        <div class="right">
+
+            <h2>Login Akun</h2>
+            <p class="subtitle">
+                Masukkan username dan password Anda
+            </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+            <form action="{{ url_for('auth.login') }}" method="POST">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Masukkan Email Anda">
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Masukkan password">
+                </div>
+
+                <div class="remember">
+                    <a href="{{ url_for('auth.register_page') }}">Belum Punya Akun?</a>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    Login
+                </button>
+            </form>
+
+            <div class="footer">
+                © 2026 MODERN
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

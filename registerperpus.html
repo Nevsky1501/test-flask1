@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register - Sistem Informasi Perpustakaan</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'times',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: url("peakpx.jpg");
+    overflow:hidden;
+}
+
+.circle{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.25);
+}
+
+.circle1{
+    width:250px;
+    height:250px;
+    top:-80px;
+    left:-80px;
+}
+
+.circle2{
+    width:180px;
+    height:180px;
+    bottom:-60px;
+    right:-60px;
+}
+
+.container{
+    width:950px;
+    max-width:95%;
+    background:#fff;
+    border-radius:25px;
+    overflow:hidden;
+    display:flex;
+    box-shadow:0 20px 50px rgba(0,0,0,0.15);
+}
+
+.left{
+    flex:1;
+    background:linear-gradient(135deg,#fff0e9,#b97a36);
+    padding:50px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    text-align:center;
+}
+
+
+.left h1{
+    color: #ffff;
+    font-size: 45px;
+    margin-bottom:5px;
+}
+
+.left p{
+    line-height:1.8;
+    font-size:18px;
+    color: #fcebeb;
+}
+
+.right{
+    flex:1.2;
+    padding:40px;
+}
+
+.right h2{
+    color:#81491f;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:#cfa07b;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+.form-row{
+    display:flex;
+    gap:15px;
+}
+
+.input-group{
+    margin-bottom:15px;
+    width:100%;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:6px;
+    color:#915c4b;
+    font-size:14px;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+    padding:13px;
+    border:2px solid #d8ecff;
+    border-radius:12px;
+    outline:none;
+    transition:.3s;
+}
+
+.input-group input:focus,
+.input-group select:focus{
+    border-color:#a3652a;
+    box-shadow:0 0 10px rgba(66,185,255,.2);
+}
+
+.btn-register{
+    width:100%;
+    border:none;
+    padding:14px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#896945,#e4d2be);
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-register:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(33,150,243,.3);
+}
+
+.login-link{
+    text-align:center;
+    margin-top:18px;
+    font-size:14px;
+    color:#666;
+}
+
+.login-link a{
+    color:#c38d50;
+    text-decoration:none;
+    font-weight:600;
+}
+
+@media(max-width:768px){
+
+    .container{
+        flex-direction:column;
+    }
+
+    .form-row{
+        flex-direction:column;
+        gap:0;
+    }
+
+    .left{
+        padding:30px;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+
+<div class="container">
+
+    <div class="left">
+        <h1>NEW ACCOUNT</h1>
+        <p>
+            Daftarkan akun Anda untuk mengakses layanan perpustakaan,
+            melakukan peminjaman buku, melihat koleksi, dan mengelola
+            aktivitas perpustakaan secara online.
+        </p>
+    </div>
+
+    <div class="right">
+
+        <h2>Registrasi Admin</h2>
+        <p class="subtitle">
+            Lengkapi data berikut untuk membuat akun baru
+        </p>
+
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+        <form action="{{ url_for('auth.register') }}" method="POST">
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" name="nama" placeholder="Nama depan">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="contoh@email.com">
+            </div>
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Password">
+                </div>
+
+                <div class="input-group">
+                    <label>Konfirmasi Kode Admin (Optional)</label>
+                    <input type="password" name = "kode_admin" placeholder="Kosongkan jika bukan Admin">
+                    <p class="kode-hint">Isi kode khusus untuk mendapat role <span>Admin</span>. Kosongkan untuk role Anggota.</p>
+                </div>
+            </div>
+
+       
+            <button type="submit" class="btn-register">
+                Daftar Sekarang
+            </button>
+
+        </form>
+
+        <div class="login-link">
+            Sudah memiliki akun?
+            <a href="{{ url_for('auth.login_page') }}">Login</a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

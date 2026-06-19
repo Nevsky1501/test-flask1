@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Sistem Informasi Perpustakaan</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url(images/peakpx.jpg);
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Dekorasi Lingkaran */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(5px);
+        }
+
+        .circle1 {
+            width: 280px;
+            height: 280px;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle2 {
+            width: 200px;
+            height: 200px;
+            bottom: -70px;
+            right: -70px;
+        }
+
+        .circle3 {
+            width: 130px;
+            height: 130px;
+            top: 15%;
+            right: 10%;
+        }
+
+        .container {
+            width: 520px;
+            max-width: 95%;
+            background: linear-gradient(135deg, #fff0e9, #b97a36);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            padding: 60px 50px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-size: 90px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .logo img {
+            width: 110px;
+        }
+
+        .title {
+            font-size: 38px;
+            font-weight: 700;
+            color: #f2ead1;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+            font-style: italic;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #896945, #c9a06a);
+            color: white;
+            box-shadow: 0 6px 20px rgba(80, 40, 5, 0.25);
+        }
+
+        .btn-register {
+            background: rgba(255, 255, 255, 0.9);
+            color: #81491f;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.92;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        .footer {
+            margin-top: 35px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 28px;
+            }
+
+            .title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
+
+    <div class="container">
+
+        <span class="logo">
+            <div class="icon">📚</div>
+        </span>
+
+        <h1 class="title">LIBRARY ADMIN</h1>
+
+        <p class="subtitle">
+            Selamat datang di Sistem Informasi Perpustakaan.<br>
+            Kelola data buku, anggota, peminjaman, dan pengembalian<br>
+            dengan lebih mudah dan cepat.
+        </p>
+
+        <div class="btn-group">
+            <a href="{{url_for('auth.login_page') }}" class="btn btn-login">Login</a>
+            <a href="{{url_for('auth.register_page') }}" class="btn btn-register">Register</a>
+        </div>
+
+        <div class="footer">© 2026 MODERN</div>5
+
+    </div>
+
+</body>
+</html>

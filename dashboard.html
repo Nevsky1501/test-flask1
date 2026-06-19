@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f7f0e8;
+        }
+
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: linear-gradient(160deg, #fff0e9 0%, #b97a36 100%);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 20;
+            box-shadow: 4px 0 24px rgba(140, 80, 20, 0.13);
+        }
+
+        .sidebar-brand {
+            padding: 32px 28px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-brand .icon {
+            font-size: 28px;
+        }
+
+        .sidebar-brand span {
+            font-size: 22px;
+            font-weight: 700;
+            color: #4d3d0f;
+            letter-spacing: 2px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-section-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.5);
+            padding: 16px 12px 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .nav-item i {
+            width: 20px;
+            font-size: 15px;
+            opacity: 0.85;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.28);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .sidebar-footer {
+            padding: 20px 16px 28px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.18);
+            border: 1.5px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+            padding: 11px 16px;
+            color: #ffe0c8;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            transition: 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,80,60,0.18);
+            color: #ff9b7a;
+            border-color: rgba(255,120,80,0.4);
+        }
+
+        /* ─── MAIN ─── */
+        .main {
+            margin-left: 250px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ─── TOPBAR ─── */
+        .topbar {
+            background: white;
+            padding: 16px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .topbar-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #5a3310;
+        }
+
+        .topbar-title span {
+            font-weight: 300;
+            color: #3d2005;
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info .name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #5a3310;
+        }
+
+        .user-info .role {
+            font-size: 12px;
+            color: #b97a36;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fff0e9, #b97a36);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(185,122,54,0.3);
+        }
+
+        /* ─── CONTENT ─── */
+        .content {
+            padding: 36px;
+            flex: 1;
+        }
+
+        /* Flash messages */
+        .flash {
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .flash.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .flash.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* ─── STAT CARDS ─── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 26px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(185,122,54,0.08);
+            transition: 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(185,122,54,0.14);
+        }
+
+        .stat-info .label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #a8916a;
+            margin-bottom: 6px;
+        }
+
+        .stat-info .value {
+            font-size: 34px;
+            font-weight: 700;
+            color: #3d2005;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .stat-info .sub {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        /* card variants */
+        .stat-card.amber .stat-icon  { background: #fff3e0; color: #b97a36; }
+        .stat-card.amber .stat-info .sub { color: #b97a36; }
+
+        .stat-card.blue  .stat-icon  { background: #e8f4fd; color: #3b82f6; }
+        .stat-card.blue  .stat-info .sub { color: #3b82f6; }
+
+        .stat-card.orange .stat-icon { background: #fff3e8; color: #e06c00; }
+        .stat-card.orange .stat-info .sub { color: #e06c00; }
+
+        /* ─── TABLE CARD ─── */
+        .table-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(185,122,54,0.08);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 22px 28px;
+            border-bottom: 1px solid #f3e9dc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h2 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #3d2005;
+        }
+
+        .table-header a {
+            font-size: 13px;
+            font-weight: 600;
+            color: #b97a36;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .table-header a:hover {
+            color: #815020;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: #fdf6ee;
+        }
+
+        thead th {
+            padding: 13px 24px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #a8916a;
+            text-align: left;
+        }
+
+        tbody tr {
+            border-top: 1px solid #fdf0e0;
+            transition: 0.15s;
+        }
+
+        tbody tr:hover {
+            background: #fdf6ee;
+        }
+
+        tbody td {
+            padding: 14px 24px;
+            font-size: 14px;
+            color: #5a3310;
+        }
+
+        .td-member {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .td-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fff0e9, #e0a86a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #7a3e10;
+            flex-shrink: 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.aktif    { background: #d1fae5; color: #065f46; }
+        .badge.terlambat { background: #fff3cd; color: #92400e; }
+        .badge.kembali  { background: #f3f4f6; color: #4b5563; }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #c4a07a;
+        }
+
+        .empty-state i {
+            font-size: 40px;
+            opacity: 0.25;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main {
+                margin-left: 200px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+            .content { padding: 20px; }
+            .topbar { padding: 14px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── SIDEBAR ─── -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <span class="icon">📚</span>
+            <span>Modern</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('auth.dashboard') }}" class="nav-item active">
+                <i class="fas fa-chart-line"></i>
+                Ringkasan
+            </a>
+            <a href="{{ url_for('auth.buku') }}" class="nav-item">
+                <i class="fas fa-book"></i>
+                Data Buku
+            </a>
+            <a href="{{ url_for('auth.anggota') }}" class="nav-item">
+                <i class="fas fa-users"></i>
+                Data Anggota
+            </a>
+    
+            <a href="{{ url_for('auth.peminjaman') }}" class="nav-item">
+                <i class="fas fa-exchange-alt"></i>
+                Data Peminjaman
+                </a>
+
+            <div class="nav-section-label">Laporan</div>
+            <a href="{{ url_for('auth.laporan') }}" class="nav-item">
+                <i class="fas fa-file-invoice"></i>
+                Laporan Peminjaman
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <form action="/logout" method="POST">
+                <button type="submit" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Keluar
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- ─── MAIN ─── -->
+    <div class="main">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-title">
+                Dashboard <span>/ Ringkasan</span>
+            </div>
+            <div class="topbar-user">
+                <div class="user-info">
+                    <div class="name">{{ session['nama'] if session['nama'] else 'Admin Perpustakaan' }}</div>
+                    <div class="role">{{ session['role'] if session['role'] else 'Anggota' }}</div>
+                </div>
+                <div class="avatar">
+                    {{ session['nama'][0].upper() if session['nama'] else 'A' }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+
+            <!-- Flash messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <!-- Stat Cards -->
+            <div class="stats-grid">
+
+                <div class="stat-card amber">
+                    <div class="stat-info">
+                        <div class="label">Total Koleksi</div>
+                        <div class="value">{{ total_buku if total_buku is defined else '—' }}</div>
+                        <div class="sub"><i class="fas fa-book mr-1"></i> judul buku tersedia</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card blue">
+                    <div class="stat-info">
+                        <div class="label">Anggota Aktif</div>
+                        <div class="value">{{ total_anggota if total_anggota is defined else '—' }}</div>
+                        <div class="sub"><i class="fas fa-user-check mr-1"></i> anggota terdaftar</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card orange">
+                    <div class="stat-info">
+                        <div class="label">Dipinjam Saat Ini</div>
+                        <div class="value">{{ total_pinjam if total_pinjam is defined else '—' }}</div>
+                        <div class="sub"><i class="fas fa-clock mr-1"></i> sedang dipinjam</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Tabel Peminjaman Terbaru -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h2>Peminjaman Terbaru</h2>
+                    <a href="#">Lihat Semua →</a>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Anggota</th>
+                                <th>Judul Buku</th>
+                                <th>Tanggal Pinjam</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if peminjaman_terbaru %}
+                                {% for p in peminjaman_terbaru %}
+                                <tr>
+                                    <td>
+                                        <div class="td-member">
+                                            <div class="td-avatar">{{ p.nama_anggota[0].upper() }}</div>
+                                            <span>{{ p.nama_anggota }}</span>
+                                        </div>
+                                    </td>
+                                    <td>{{ p.judul_buku }}</td>
+                                    <td>{{ p.tgl_pinjam }}</td>
+                                    <td>
+                                        {% if p.status == 'Terlambat' %}
+                                            <span class="badge terlambat">Terlambat</span>
+                                        {% elif p.status == 'Dikembalikan' %}
+                                            <span class="badge kembali">Dikembalikan</span>
+                                        {% else %}
+                                            <span class="badge aktif">Aktif</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="4">
+                                    <div class="empty-state">
+                                        <i class="fas fa-inbox"></i>
+                                        <p>Belum ada data peminjaman.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

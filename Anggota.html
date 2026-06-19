@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Buku - Libris</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f7f0e8;
+        }
+
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: linear-gradient(160deg, #fff0e9 0%, #b97a36 100%);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 20;
+            box-shadow: 4px 0 24px rgba(140, 80, 20, 0.13);
+        }
+
+        .sidebar-brand {
+            padding: 32px 28px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-brand .icon { font-size: 28px; }
+
+        .sidebar-brand span {
+            font-size: 22px;
+            font-weight: 700;
+            color: #4d3d0f;
+            letter-spacing: 2px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-section-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.5);
+            padding: 16px 12px 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: rgba(255,255,255,0.85);
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .nav-item i { width: 20px; font-size: 15px; }
+
+        .nav-item:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.28);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .sidebar-footer {
+            padding: 20px 16px 28px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.18);
+            border: 1.5px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+            padding: 11px 16px;
+            color: #ffe0c8;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            transition: 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,80,60,0.18);
+            color: #ff9b7a;
+            border-color: rgba(255,120,80,0.4);
+        }
+
+        /* ─── MAIN ─── */
+        .main {
+            margin-left: 250px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ─── TOPBAR ─── */
+        .topbar {
+            background: white;
+            padding: 16px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .topbar-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #5a3310;
+        }
+
+        .btn-tambah {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #896945, #b97a36);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s;
+            box-shadow: 0 4px 14px rgba(185,122,54,0.3);
+        }
+
+        .btn-tambah:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(185,122,54,0.35);
+        }
+
+        /* ─── CONTENT ─── */
+        .content { padding: 36px; flex: 1; }
+
+        /* Flash */
+        .flash {
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .flash.success { background: #d1fae5; color: #065f46; }
+        .flash.error   { background: #fee2e2; color: #991b1b; }
+
+        /* ─── TOOLBAR ─── */
+        .toolbar {
+            background: white;
+            padding: 16px 24px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid #f3e9dc;
+            box-shadow: 0 2px 12px rgba(185,122,54,0.06);
+            flex-wrap: wrap;
+        }
+
+        .search-wrap {
+            position: relative;
+            width: 340px;
+        }
+
+        .search-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #c4a07a;
+            font-size: 13px;
+        }
+
+        .search-wrap input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            border: 2px solid #f0e0cc;
+            border-radius: 12px;
+            outline: none;
+            font-size: 13px;
+            color: #5a3310;
+            background: #fdf8f3;
+            transition: 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .search-wrap input:focus {
+            border-color: #b97a36;
+            background: white;
+        }
+
+        .filter-select {
+            padding: 10px 16px;
+            border: 2px solid #f0e0cc;
+            border-radius: 12px;
+            outline: none;
+            font-size: 13px;
+            color: #5a3310;
+            background: #fdf8f3;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .filter-select:focus { border-color: #b97a36; }
+
+        /* ─── TABLE ─── */
+        .table-wrap {
+            background: white;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px rgba(185,122,54,0.08);
+            overflow: hidden;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        thead tr { background: #fdf6ee; }
+
+        thead th {
+            padding: 13px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #a8916a;
+            text-align: left;
+        }
+
+        thead th.center { text-align: center; }
+
+        tbody tr {
+            border-top: 1px solid #fdf0e0;
+            transition: 0.15s;
+        }
+
+        tbody tr:hover { background: #fdf6ee; }
+
+        tbody td {
+            padding: 14px 20px;
+            font-size: 13px;
+            color: #5a3310;
+        }
+
+        tbody td.center { text-align: center; }
+
+        .td-id {
+            font-size: 12px;
+            color: #a8916a;
+            font-weight: 600;
+            font-family: monospace;
+        }
+
+        .td-judul { font-weight: 600; color: #3d2005; }
+        .td-sub   { font-size: 12px; color: #a8916a; margin-top: 2px; }
+
+        .badge-kategori {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #fff3e0;
+            color: #b97a36;
+        }
+
+        .stok-ok  { font-weight: 700; color: #16a34a; }
+        .stok-low { font-weight: 700; color: #dc2626; }
+
+        .aksi-wrap {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-edit {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #e8f4fd;
+            color: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-edit:hover { background: #3b82f6; color: white; }
+
+        .btn-hapus {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #fee2e2;
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 13px;
+        }
+
+        .btn-hapus:hover { background: #dc2626; color: white; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #c4a07a;
+        }
+
+        .empty-state i {
+            font-size: 40px;
+            opacity: 0.25;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        /* Pagination */
+        .pagination {
+            padding: 16px 24px;
+            border-top: 1px solid #f3e9dc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pagination span { font-size: 13px; color: #a8916a; }
+
+        .page-btns { display: flex; gap: 6px; }
+
+        .page-btn {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1.5px solid #f0e0cc;
+            background: white;
+            color: #a8916a;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .page-btn:hover { border-color: #b97a36; color: #b97a36; }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, #896945, #b97a36);
+            color: white;
+            border-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+            .content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── SIDEBAR ─── -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <span class="icon">📚</span>
+            <span>Modern</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('auth.dashboard') }}" class="nav-item">
+                <i class="fas fa-chart-line"></i> Ringkasan
+            </a>
+            <a href="{{ url_for('auth.buku') }}" class="nav-item">
+                <i class="fas fa-book"></i> Data Buku
+            </a>
+            <a href="{{ url_for('auth.anggota') }}" class="nav-item active">
+                <i class="fas fa-users"></i> Data Anggota
+            </a>
+            <a href="{{ url_for('auth.peminjaman') }}" class="nav-item">
+                <i class="fas fa-exchange-alt"></i> Data Peminjaman
+            </a>
+            <div class="nav-section-label">Laporan</div>
+            <a href="{{ url_for('auth.laporan') }}" class="nav-item">
+                <i class="fas fa-file-invoice"></i>
+                Laporan Peminjaman
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <form action="/logout" method="POST">
+                <button type="submit" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Keluar
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- ─── MAIN ─── -->
+    <div class="main">
+        <header class="topbar">
+            <div class="topbar-title">Manajemen Data Buku</div>
+            <a href="{{ url_for('auth.tambah_anggota') }}" class="btn-tambah">
+                <i class="fas fa-plus"></i> Tambah Anggota Baru
+            </a>
+        </header>
+
+        <div class="content">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="search-wrap">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Cari nama, email, hak akses member">
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama Lengkap</th>
+                            <th>Email</th>
+                            <th>Hak Akses</th>
+                            <th class="center">Tanggal bergabung</th>
+                            <th class="center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for member in daftar_anggota %}
+                        <tr>
+                            <td><span class="td-id">#{{ member.id_anggota }}</span></td>
+                            <td><span class="badge-kategori">{{ member.nama_lengkap }}</span></td>
+                            <td>{{ member.email }}</td>
+                            <td>{{ member.hak_akses }}</td>
+                            <td class="center">{{ member.tanggal_bergabung }}</td>
+                            <td class="center">
+                                <div class="aksi-wrap">
+                                    <a href="{{ url_for('auth.edit_anggota', id_anggota=member.id_anggota) }}" class="btn-edit" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ url_for('auth.hapus_anggota', id_anggota=member.id_anggota) }}" method="POST" style="display:inline" onsubmit="return confirm('Hapus buku ini?')">
+                                        <button type="submit" class="btn-hapus" title="Hapus">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        {% if not daftar_anggota %}
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <i class="fas fa-book-open"></i>
+                                    <p>Belum ada data anggota tersedia.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <span>Menampilkan {{ daftar_anggota|length }} data</span>
+                    <div class="page-btns">
+                        <button class="page-btn">Prev</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">Next</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
